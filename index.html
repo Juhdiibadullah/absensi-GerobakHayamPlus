@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Presensi Gerobak Hayam Plus</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,700;0,800;1,700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1f2a37;--muted:#4b5866;--red:#cf1f2e;--red2:#a9141f;--yel:#ffc928;--cream:#fff9ec;--line:#eadfc6}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--cream);color:var(--ink);font:17px/1.6 'Plus Jakarta Sans',system-ui,sans-serif}
+h1,h2,h3,p{margin:0}
+h1,h2,h3{line-height:1.12;font-weight:800}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1100px;margin:0 auto;padding:0 24px;position:relative;z-index:1}
+a:focus-visible,button:focus-visible{outline:3px solid var(--ink);outline-offset:3px}
+
+/* Logo teks (ganti dengan gambar lewat LOGO_ID di bawah) */
+.brand{display:inline-flex;align-items:center}
+.brand img{height:58px;width:auto;display:block}
+.wm{display:inline-block;font-family:'Baloo 2',system-ui,sans-serif;font-weight:800;line-height:.95}
+.wm b{display:block;font-size:30px;color:var(--yel);text-shadow:-2px -2px 0 var(--ink),2px -2px 0 var(--ink),-2px 2px 0 var(--ink),2px 2px 0 var(--ink)}
+.wm i{font-style:normal;display:inline-block;background:var(--ink);color:#fff;font-size:21px;padding:0 10px;border-radius:6px;transform:rotate(-2deg)}
+
+header .wrap{display:flex;align-items:center;gap:32px;padding-top:16px;padding-bottom:16px;flex-wrap:wrap}
+nav{display:flex;gap:6px;flex-wrap:wrap;flex:1}
+nav a{min-height:44px;display:inline-flex;align-items:center;padding:0 14px;font-weight:500;border-bottom:3px solid transparent}
+nav a.on,nav a:hover{font-weight:700;border-bottom-color:var(--yel)}
+.tg{font-style:italic;font-weight:700;font-size:15px;box-shadow:0 8px 0 -5px var(--yel)}
+@media (max-width:760px){.tg{display:none}}
+
+/* Hero */
+.hero{position:relative;overflow:hidden;padding:40px 0 130px}
+.hero::before,.hero::after{content:"";position:absolute;bottom:-90px;border-radius:50%}
+.hero::before{left:-160px;width:520px;height:300px;background:var(--yel)}
+.hero::after{right:-140px;width:460px;height:280px;background:var(--red)}
+.hero .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:40px}
+.txt{flex:1 1 420px}
+.pill{display:inline-block;background:#ffe27a;font-weight:700;padding:6px 18px;border-radius:999px;margin-bottom:22px}
+h1{font-size:clamp(38px,5.6vw,64px);letter-spacing:-1.5px;margin-bottom:22px}
+h1 em{font-style:normal;color:var(--red)}
+.lead{font-size:19px;color:var(--muted);max-width:27em;margin-bottom:32px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:56px;padding:0 32px;border-radius:999px;border:0;background:var(--red);color:#fff;font:700 18px 'Plus Jakarta Sans',system-ui,sans-serif;cursor:pointer;box-shadow:0 8px 20px rgba(207,31,46,.3)}
+.btn:hover{background:var(--red2)}
+
+.stage{flex:1 1 360px;position:relative;min-height:420px;display:flex;align-items:center;justify-content:center}
+.stage::before{content:"";position:absolute;inset:6% 4%;border-radius:40% 60% 55% 45%/50% 45% 55% 50%;background:linear-gradient(135deg,#ffe27a,#ffc928);opacity:.55}
+.maskot{position:absolute;right:-10px;bottom:-30px;height:112%;max-height:520px;width:auto}
+.stage.m{justify-content:flex-start}
+.card{position:relative;z-index:2;width:100%;max-width:360px;background:#fff;border-radius:24px;padding:28px 26px;text-align:center;box-shadow:0 24px 60px rgba(120,80,0,.18)}
+.card .brand{margin-bottom:10px}
+.card h2{font-size:22px;margin-bottom:4px}
+.card .s{color:var(--muted);font-size:15px;margin-bottom:18px}
+.st{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:20px;padding:14px 0;border-top:1px dashed var(--line);border-bottom:1px dashed var(--line)}
+.st b{display:block;font-size:30px;line-height:1}
+.st b.r{color:var(--red)}
+.st span{font-size:13px;color:var(--muted)}
+.card .btn{width:100%}
+.card small{display:block;margin-top:14px;color:var(--muted);font-size:13px}
+
+/* Fitur */
+.feat{position:relative;z-index:2;background:var(--cream);margin-top:-60px;border-radius:70px 70px 0 0/46px 46px 0 0;padding:44px 0 36px}
+.fg{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.fi{display:block;padding:12px 24px;text-align:center;border-left:1px solid var(--line);border-radius:16px;transition:background .15s}
+a.fi:hover{background:#fff}
+.fi:first-child{border-left:0}
+.ic{width:64px;height:64px;border-radius:50%;background:var(--yel);display:flex;align-items:center;justify-content:center;margin:0 auto 14px}
+.fi h3{font-size:18px;margin-bottom:6px}
+.fi p{color:var(--muted);font-size:15px}
+@media (max-width:700px){.fi{border-left:0;padding:16px 8px}}
+
+/* Seksi lain */
+section.s2{padding:64px 0;background:#fff;border-top:1px solid var(--line)}
+section.s2.alt{background:var(--cream)}
+h2.h{font-size:clamp(28px,3.8vw,38px);letter-spacing:-1px;margin-bottom:10px}
+h2.h::after{content:"";display:block;width:56px;height:6px;border-radius:3px;background:var(--yel);margin-top:12px}
+.sub{color:var(--muted);max-width:36em;margin:16px 0 28px}
+.shifts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:28px}
+.shifts div{background:var(--cream);border-radius:16px;padding:18px 20px;border-left:6px solid var(--yel)}
+.shifts b{display:block;font-size:20px}
+.shifts span{color:var(--red);font-weight:800;font-size:18px}
+.outlets a{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:54px;padding:10px 0;border-top:1px solid var(--line);font-weight:700}
+.outlets a:last-child{border-bottom:1px solid var(--line)}
+.outlets a span{font-weight:500;color:var(--red)}
+.steps{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:28px}
+.steps li{display:flex;gap:16px}
+.n{flex:none;width:46px;height:46px;border-radius:50%;background:var(--red);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px}
+.steps h3{font-size:19px;margin-bottom:4px}
+.steps p{color:var(--muted)}
+.kon p{margin-bottom:8px}
+footer{background:var(--ink);color:#c9d2dc;padding:22px 0;font-size:14px;text-align:center}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <a class="brand" href="./"><img class="logo" alt="Gerobak Hayam Plus" hidden><span class="wm logoTxt"><b>Gerobak</b><i>Hayam Plus</i></span></a>
+    <nav>
+      <a class="on" href="#" data-go="beranda">Beranda</a>
+      <a href="#" data-go="tentang">Tentang</a>
+      <a href="#" data-go="panduan">Panduan</a>
+      <a href="#" data-go="kontak">Kontak</a>
+    </nav>
+    <span class="tg">Bersama Tumbuh Lebih Baik</span>
+  </div>
+</header>
+
+<main>
+<div class="hero" id="beranda">
+  <div class="wrap">
+    <div class="txt">
+      <span class="pill">Sistem Presensi Karyawan</span>
+      <h1>Selamat Datang di <em>Gerobak Hayam Plus</em></h1>
+      <p class="lead">Presensi karyawan kini lebih mudah, cepat, dan praktis. Dukung produktivitas tim dengan sistem presensi digital yang aman dan andal.</p>
+      <a class="btn" href="./presensi.html">Masuk Sekarang
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+    </div>
+    <div class="stage" id="stage">
+      <img class="maskot" id="maskot" alt="" hidden>
+      <div class="card" aria-live="polite">
+        <a class="brand" href="./"><img class="logo" alt="Gerobak Hayam Plus" hidden><span class="wm logoTxt"><b>Gerobak</b><i>Hayam Plus</i></span></a>
+        <h2>Presensi Karyawan</h2>
+        <p class="s" id="nTgl">Memuat data…</p>
+        <div class="st">
+          <div><b id="nHadir">-</b><span>Sudah masuk</span></div>
+          <div><b class="r" id="nTelat">-</b><span>Terlambat</span></div>
+          <div><b id="nKar">-</b><span>Karyawan aktif</span></div>
+        </div>
+        <a class="btn" href="./presensi.html">Mulai Presensi
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+        <small>Sistem Presensi Karyawan<br>Gerobak Hayam Plus</small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="feat">
+  <div class="wrap fg">
+    <a class="fi" href="#" data-go="panduan"><div class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#1f2a37" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div><h3>Cepat &amp; Praktis</h3><p>Presensi hanya dalam beberapa detik.</p></a>
+    <a class="fi" href="#" data-go="tentang"><div class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#1f2a37" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></div><h3>Akurat &amp; Aman</h3><p>Data tersimpan dengan aman dan terintegrasi.</p></a>
+    <a class="fi" href="./presensi.html"><div class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="#1f2a37" aria-hidden="true"><rect x="4" y="12" width="4" height="8" rx="1"/><rect x="10" y="7" width="4" height="13" rx="1"/><rect x="16" y="3" width="4" height="17" rx="1"/></svg></div><h3>Pantau Kehadiran</h3><p>Rekap presensi mudah dilihat kapan saja.</p></a>
+    <a class="fi" href="#" data-go="outlets"><div class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="#1f2a37" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><circle cx="5.5" cy="9.5" r="2.5"/><circle cx="18.5" cy="9.5" r="2.5"/><path d="M6 20v-2.5a6 6 0 0 1 12 0V20z"/></svg></div><h3>Untuk Semua Outlet</h3><p>Terhubung di seluruh cabang Gerobak Hayam Plus.</p></a>
+  </div>
+</div>
+
+<section class="s2" id="tentang">
+  <div class="wrap">
+    <h2 class="h">Tentang presensi</h2>
+    <p class="sub">Absen dilakukan dengan selfie dan lokasi GPS, maksimal <b id="tRad">100</b> meter dari outlet. Masuk lewat <b id="tTol">10</b> menit dari jam mulai shift dicatat Terlambat.</p>
+    <div class="shifts" id="shifts"></div>
+    <div class="outlets" id="outlets"><p>Memuat daftar outlet…</p></div>
+  </div>
+</section>
+
+<section class="s2 alt" id="panduan">
+  <div class="wrap">
+    <h2 class="h">Panduan presensi</h2>
+    <p class="sub">Tiga langkah, tidak sampai satu menit.</p>
+    <ol class="steps">
+      <li><span class="n">1</span><div><h3>Pilih nama</h3><p>Buka halaman presensi, lalu pilih nama Anda dari daftar karyawan.</p></div></li>
+      <li><span class="n">2</span><div><h3>Aktifkan lokasi dan selfie</h3><p>Izinkan GPS, pilih shift, lalu ambil selfie langsung dari kamera.</p></div></li>
+      <li><span class="n">3</span><div><h3>Ketuk absen</h3><p>Masuk atau pulang, hasilnya langsung muncul di riwayat Anda.</p></div></li>
+    </ol>
+  </div>
+</section>
+
+<section class="s2" id="kontak">
+  <div class="wrap kon">
+    <h2 class="h">Kontak</h2>
+    <p class="sub">Ada kendala saat presensi? Hubungi admin.</p>
+    <p>WhatsApp: [Nomor WhatsApp admin]</p>
+    <p>Email: [Email admin]</p>
+  </div>
+</section>
+</main>
+
+<footer>Sistem Presensi Karyawan Gerobak Hayam Plus</footer>
+
+<script>
+/* ===== Pengaturan gambar (opsional) =====
+   Unggah gambar ke Google Drive, bagikan "Siapa saja yang memiliki link",
+   lalu isi ID file-nya (bagian antara /d/ dan /view pada link Drive). */
+const LOGO_ID = '';
+const MASKOT_ID = '';
+const driveImg = (id, w) => 'https://drive.google.com/thumbnail?id=' + id + '&sz=w' + w;
+if (LOGO_ID) {
+  document.querySelectorAll('img.logo').forEach(i => { i.src = driveImg(LOGO_ID, 600); i.hidden = false; });
+  document.querySelectorAll('.logoTxt').forEach(t => { t.hidden = true; });
+}
+if (MASKOT_ID) {
+  const m = document.getElementById('maskot');
+  m.src = driveImg(MASKOT_ID, 1000); m.hidden = false;
+  document.getElementById('stage').classList.add('m');
+}
+
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const jam = t => String(t).replace(':', '.');
+
+// Tautan #anchor tidak jalan di iframe Apps Script, jadi pakai scroll manual
+document.querySelectorAll('[data-go]').forEach(a => a.addEventListener('click', e => {
+  e.preventDefault();
+  $(a.dataset.go).scrollIntoView({ behavior: 'smooth' });
+  if (a.closest('nav')) document.querySelectorAll('nav a').forEach(x => x.classList.toggle('on', x === a));
+}));
+
+function draw(d) {
+  const t = new Date(d.tanggal + 'T00:00:00');
+  $('nTgl').textContent = t.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+  $('nHadir').textContent = d.hadir;
+  $('nTelat').textContent = d.telat;
+  $('nKar').textContent = d.karyawan;
+  $('tRad').textContent = d.radius;
+  $('tTol').textContent = d.toleransi;
+  $('shifts').innerHTML = Object.keys(d.shifts).map(k =>
+    '<div><b>' + esc(k) + '</b><span>' + jam(d.shifts[k].start) + ' sampai ' + jam(d.shifts[k].end) + '</span></div>').join('');
+  $('outlets').innerHTML = d.outlets.map(o =>
+    '<a href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(o.lat + ',' + o.lng) +
+    '" target="_blank" rel="noopener">' + esc(o.nama) + '<span>Buka di Google Maps</span></a>').join('');
+}
+
+// GANTI dengan URL Web App Apps Script yang berakhiran /exec.
+const API_URL = 'TEMPEL_URL_WEB_APP_APPS_SCRIPT_DI_SINI';
+
+fetch(API_URL + '?api=getLandingData', { method: 'GET', redirect: 'follow' })
+  .then(r => {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  })
+  .then(result => {
+    if (!result || result.ok !== true) throw new Error('Respons API tidak valid.');
+    draw(result.data);
+  })
+  .catch(() => {
+    $('nTgl').textContent = 'Data belum bisa dimuat. Periksa koneksi API Apps Script.';
+  });
+</script>
+</body>
+</html>

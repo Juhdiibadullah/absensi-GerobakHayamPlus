@@ -1,0 +1,20 @@
+UBAHAN PADA Landing.gs
+
+Cari fungsi doGet(e) yang sudah ada. Pada baris paling awal di dalam fungsi itu,
+tambahkan baris berikut:
+
+  if (e && e.parameter && e.parameter.api) return apiGet_(e);
+
+Contoh struktur (JANGAN mengganti seluruh doGet lama dengan contoh ini):
+
+  function doGet(e) {
+    if (e && e.parameter && e.parameter.api) return apiGet_(e);
+
+    // Lanjutkan seluruh kode doGet lama Anda di bawah ini,
+    // termasuk pemilihan halaman landing dan halaman presensi.
+  }
+
+Penting:
+- Jangan membuat doGet kedua jika sudah ada.
+- Hanya boleh ada satu doGet(e) dalam seluruh project Apps Script.
+- Jangan hapus getLandingData().

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Presensi Gerobak Hayam Plus</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@800&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,700;0,800;1,700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1f2a37;--muted:#4b5866;--red:#cf1f2e;--red2:#a9141f;--yel:#ffc928;--cream:#fff9ec;--line:#eadfc6}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.5 'Plus Jakarta Sans',system-ui,sans-serif}
+h1,h2,.clock{margin:0;line-height:1.1;font-weight:800}
+p{margin:0}
+[hidden]{display:none!important}
+button{font:inherit;cursor:pointer}
+.muted{color:var(--muted)}
+.ok{color:#1f7a4d}.bad{color:var(--red)}
+
+/* Logo teks */
+.brand{display:inline-flex;align-items:center}
+.brand img{height:50px;width:auto;display:block}
+.wm{display:inline-block;font-family:'Baloo 2',system-ui,sans-serif;font-weight:800;line-height:.95}
+.wm b{display:block;font-size:26px;color:var(--yel);text-shadow:-2px -2px 0 var(--ink),2px -2px 0 var(--ink),-2px 2px 0 var(--ink),2px 2px 0 var(--ink)}
+.wm i{font-style:normal;display:inline-block;background:var(--ink);color:#fff;font-size:18px;padding:0 9px;border-radius:6px;transform:rotate(-2deg)}
+
+.top{max-width:480px;margin:0 auto;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.tg{font-style:italic;font-weight:700;font-size:13px;text-align:right;box-shadow:0 7px 0 -4px var(--yel)}
+
+/* Kartu jam */
+.hero{position:relative;overflow:hidden;max-width:480px;margin:0 auto 6px;padding:0 16px}
+.jam{position:relative;overflow:hidden;background:var(--red);color:#fff;border-radius:24px;padding:22px 22px 24px}
+.jam::after{content:"";position:absolute;right:-60px;bottom:-70px;width:200px;height:160px;border-radius:50%;background:var(--yel)}
+.jam>*{position:relative;z-index:1}
+.pill{display:inline-block;background:#ffe27a;color:var(--ink);font-weight:700;font-size:13px;padding:4px 14px;border-radius:999px;margin-bottom:14px}
+.title{font-size:28px;margin-bottom:10px}
+.clock{font-size:56px;letter-spacing:-1px}
+.date{margin-top:4px;color:#ffe9ea}
+
+.wrap{max-width:480px;margin:0 auto;padding:20px 16px 40px}
+label.f{font-weight:700}
+select{width:100%;padding:13px;border:2px solid var(--line);border-radius:14px;font:inherit;margin:6px 0 20px;background:#fff;color:var(--ink)}
+
+.panel,.nota{background:#fff;border-radius:20px;padding:18px;margin-bottom:18px;box-shadow:0 10px 30px rgba(120,80,0,.10)}
+.nota{border-left:6px solid var(--yel)}
+.panel h2,.nota h2{font-size:19px;margin-bottom:12px}
+.panel h2::after,.nota h2::after{content:"";display:block;width:38px;height:5px;border-radius:3px;background:var(--yel);margin-top:8px}
+.row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--line)}
+.row:last-child{border:0}
+
+/* Pilihan shift */
+.chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px}
+.chips label{border:2px solid var(--line);border-radius:14px;padding:10px 4px;text-align:center;cursor:pointer;font-weight:700;line-height:1.3;background:#fff}
+.chips label small{display:block;font-weight:500;color:var(--muted);font-size:12px}
+.chips input{position:absolute;opacity:0}
+.chips label:has(input:checked){border-color:var(--ink);background:var(--yel)}
+.chips label:has(input:checked) small{color:var(--ink)}
+.chips label:has(input:focus-visible){outline:3px solid var(--ink);outline-offset:2px}
+
+.cam{background:var(--ink);border-radius:14px;overflow:hidden;margin-bottom:10px}
+.cam img{display:block;width:100%;height:auto}
+.ghost{background:#fff;border:2px solid var(--ink);border-radius:999px;padding:8px 14px;color:var(--ink);font-weight:700}
+.wide{width:100%;margin-bottom:10px;padding:11px}
+.maps{display:block;text-align:center;text-decoration:none;background:#fff3c4;color:var(--ink);border:2px solid var(--yel);border-radius:14px;padding:12px;font-weight:700;margin-top:10px}
+.maps:first-child{margin-top:0}
+.geo{margin:0 0 12px;padding:9px 12px;border-radius:12px;background:#f5efe0;font-size:14px}
+.geo.ok{display:none}.geo.bad{background:#fde0e2;color:var(--ink)}
+.btn{width:100%;border:0;border-radius:999px;padding:15px;font-weight:800;font-size:18px;background:var(--red);color:#fff;box-shadow:0 8px 20px rgba(207,31,46,.28)}
+.btn:hover:not(:disabled){background:var(--red2)}
+.btn:disabled{background:#d9cfbb;color:#7b705d;box-shadow:none;cursor:not-allowed}
+.msg{min-height:24px;margin:10px 0 0;font-weight:500}
+.item{display:grid;grid-template-columns:auto 1fr auto;gap:4px 12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:14px}
+.item:last-child{border:0}
+.item a{color:var(--red);font-weight:700}
+.btn:focus-visible,.ghost:focus-visible,select:focus-visible,.maps:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.foot{text-align:center;color:var(--muted);font-size:13px;padding-bottom:28px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <a class="brand"><img class="logo" alt="Gerobak Hayam Plus" hidden><span class="wm logoTxt"><b>Gerobak</b><i>Hayam Plus</i></span></a>
+  <span class="tg">Bersama Tumbuh<br>Lebih Baik</span>
+</header>
+
+<section class="hero">
+  <div class="jam">
+    <span class="pill">Sistem Presensi Karyawan</span>
+    <h1 class="title">Presensi Hayam Plus</h1>
+    <div class="clock" id="clock">--:--:--</div>
+    <p class="date" id="date"></p>
+  </div>
+</section>
+
+<div class="wrap">
+  <section id="app">
+    <label class="f" for="who">Nama karyawan</label>
+    <select id="who"><option value="">Memuat daftar nama…</option></select>
+
+    <div id="main" hidden>
+
+    <div class="nota">
+      <h2>Presensi terakhir</h2>
+      <div class="row"><span>Outlet</span><b id="nOutlet">-</b></div>
+      <div class="row"><span>Shift</span><b id="nShift">-</b></div>
+      <div class="row"><span>Masuk</span><b id="nIn">--:--</b></div>
+      <div class="row"><span>Status</span><b id="nSt">Belum ada presensi</b></div>
+      <div class="row"><span>Pulang</span><b id="nOut">--:--</b></div>
+    </div>
+
+    <div class="panel">
+      <h2>Lokasi outlet</h2>
+      <div id="outlets"></div>
+    </div>
+
+    <div class="panel">
+      <h2 id="actTitle">Absen masuk</h2>
+      <div class="chips" id="shiftBox" role="radiogroup" aria-label="Pilih shift"></div>
+      <div class="cam" id="camBox" hidden><img id="shot" alt="Hasil selfie"></div>
+      <input type="file" id="fileShot" accept="image/*" capture="user" hidden>
+      <button class="ghost wide" id="bShot" type="button">Ambil selfie</button>
+      <p class="geo" id="geo">Mencari lokasi…</p>
+      <button class="btn" id="btn" disabled>Absen masuk</button>
+      <p class="msg" id="msg" role="status"></p>
+    </div>
+
+    <div class="panel">
+      <h2>Riwayat 7 terakhir</h2>
+      <div id="hist"><p class="muted">Belum ada riwayat.</p></div>
+    </div>
+
+    <div class="panel" id="rekapBox">
+      <h2>Rekap hari ini</h2>
+      <div id="rekap"><p class="muted">Belum ada yang presensi.</p></div>
+    </div>
+    </div>
+  </section>
+</div>
+<p class="foot">Sistem Presensi Karyawan Gerobak Hayam Plus</p>
+
+<script>
+/* Logo (opsional): unggah ke Google Drive, bagikan "Siapa saja yang memiliki link",
+   lalu isi ID file-nya (bagian antara /d/ dan /view pada link Drive). */
+const LOGO_ID = '';
+if (LOGO_ID) {
+  document.querySelectorAll('img.logo').forEach(i => { i.src = 'https://drive.google.com/thumbnail?id=' + LOGO_ID + '&sz=w600'; i.hidden = false; });
+  document.querySelectorAll('.logoTxt').forEach(t => { t.hidden = true; });
+}
+</script>
+
+<script>
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+let me = null, D = null, pos = null, watchId = null, busy = false, shotData = null;
+
+/* ---------- Jam (dipasang paling awal agar selalu tampil) ---------- */
+function tick() {
+  const n = new Date();
+  $('clock').textContent = n.toLocaleTimeString('id-ID', { timeZone: 'Asia/Jakarta', hour12: false }).replace(/\./g, ':');
+  $('date').textContent = n.toLocaleDateString('id-ID', { timeZone: 'Asia/Jakarta', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+}
+tick();
+setInterval(tick, 1000);
+
+// GANTI dengan URL Web App Apps Script yang berakhiran /exec.
+const API_URL = 'TEMPEL_URL_WEB_APP_APPS_SCRIPT_DI_SINI';
+
+async function run(fn, ...args) {
+  if (!API_URL || API_URL.includes('TEMPEL_URL')) {
+    throw new Error('URL API Apps Script belum diatur.');
+  }
+
+  let response;
+  if (fn === 'submitAttendance') {
+    response = await fetch(API_URL, {
+      method: 'POST',
+      redirect: 'follow',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: fn, args: args })
+    });
+  } else {
+    const params = new URLSearchParams({ api: fn });
+    if (args.length) params.set('id', args[0]);
+    response = await fetch(API_URL + '?' + params.toString(), {
+      method: 'GET',
+      redirect: 'follow'
+    });
+  }
+
+  if (!response.ok) throw new Error('Koneksi API gagal (' + response.status + ').');
+  const result = await response.json();
+  if (!result || result.ok !== true) {
+    throw new Error(result && result.error ? result.error : 'Respons API tidak valid.');
+  }
+  return result.data;
+}
+
+/* ---------- Pilih nama ---------- */
+async function boot() {
+  try {
+    const list = await run('getKaryawan');
+    $('who').innerHTML = '<option value="">Pilih nama Anda</option>' +
+      list.map(k => '<option value="' + esc(k.id) + '">' + esc(k.nama) + '</option>').join('');
+    let saved = null; try { saved = localStorage.getItem('me'); } catch (e) {}
+    if (saved && list.some(k => k.id === saved)) { $('who').value = saved; await load(); }
+  } catch (e) { $('who').innerHTML = '<option value="">Gagal memuat daftar nama</option>'; }
+}
+
+function pilih() {
+  try { localStorage.setItem('me', $('who').value); } catch (e) {}
+  resetShot();
+  $('msg').textContent = '';
+  load();
+}
+
+/* ---------- Dashboard ---------- */
+async function load() {
+  me = $('who').value;
+  if (!me) { $('main').hidden = true; return; }
+  try { D = await run('getDashboard', me); }
+  catch (e) { $('main').hidden = false; $('msg').className = 'msg bad'; $('msg').textContent = e.message; return; }
+  $('main').hidden = false; render(); startGeo();
+}
+
+function render() {
+  const o = D.open, last = o || D.riwayat[0];
+
+  if (last) {
+    $('nOutlet').textContent = last.outlet || '-';
+    $('nShift').textContent = last.shift;
+    $('nIn').textContent = last.masuk;
+    $('nOut').textContent = last.pulang || '--:--';
+    $('nSt').textContent = last.status + (last.telat ? ' (' + last.telat + ' menit)' : '');
+    $('nSt').className = last.status === 'Terlambat' ? 'bad' : 'ok';
+  }
+  $('shiftBox').hidden = !!o;
+  $('actTitle').textContent = o ? 'Absen pulang' : 'Absen masuk';
+  $('btn').textContent = o ? 'Absen pulang' : 'Absen masuk';
+
+  if (!$('shiftBox').children.length) {
+    $('shiftBox').innerHTML = Object.keys(D.shifts).map(k =>
+      '<label><input type="radio" name="shift" value="' + esc(k) + '"><span>' + esc(k) +
+      '<small>' + D.shifts[k].start.replace(':', '.') + '–' + D.shifts[k].end.replace(':', '.') + '</small></span></label>').join('');
+    $('shiftBox').addEventListener('change', updateBtn);
+  }
+
+  $('outlets').innerHTML = D.cfg.outlets.map(x =>
+    '<a class="maps" href="https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(x.lat + ',' + x.lng) +
+    '" target="_blank" rel="noopener">' + esc(x.nama) + ' · Buka di Google Maps</a>').join('');
+
+  $('hist').innerHTML = D.riwayat.length ? D.riwayat.map(r =>
+    '<div class="item"><span>' + esc(r.tanggal.slice(5)) + '</span><span>' + esc(r.shift) + (r.outlet ? ' @' + esc(r.outlet) : '') + ', ' + esc(r.masuk) +
+    ' sampai ' + esc(r.pulang || 'belum pulang') + '</span><span class="' + (r.status === 'Terlambat' ? 'bad' : 'ok') + '">' +
+    esc(r.status) + '</span></div>').join('') : '<p class="muted">Belum ada riwayat.</p>';
+
+  $('rekapBox').hidden = !D.rekap;
+  if (D.rekap && D.rekap.length) {
+    $('rekap').innerHTML = D.rekap.map(r =>
+      '<div class="item"><b>' + esc(r.nama) + '</b><span>' + esc(r.shift) + (r.outlet ? ' @' + esc(r.outlet) : '') + ', ' + esc(r.masuk) + ' sampai ' +
+      esc(r.pulang || '…') + (r.telat ? ' (telat ' + esc(r.telat) + ' mnt)' : '') + '</span><span>' +
+      (r.fotoMasuk ? '<a href="' + esc(r.fotoMasuk) + '" target="_blank" rel="noopener">foto masuk</a> ' : '') +
+      (r.fotoPulang ? '<a href="' + esc(r.fotoPulang) + '" target="_blank" rel="noopener">foto pulang</a>' : '') +
+      '</span></div>').join('');
+  } else if (D.rekap) $('rekap').innerHTML = '<p class="muted">Belum ada yang presensi.</p>';
+  updateBtn();
+}
+
+/* ---------- Lokasi ---------- */
+function meters(la1, lo1, la2, lo2) {
+  const r = x => x * Math.PI / 180;
+  const a = Math.sin(r(la2 - la1) / 2) ** 2 + Math.cos(r(la1)) * Math.cos(r(la2)) * Math.sin(r(lo2 - lo1) / 2) ** 2;
+  return 2 * 6371000 * Math.asin(Math.sqrt(a));
+}
+
+function startGeo() {
+  if (watchId !== null) return;
+  if (!navigator.geolocation) { $('geo').textContent = 'Perangkat tidak mendukung GPS.'; return; }
+  watchId = navigator.geolocation.watchPosition(p => { pos = p.coords; updateBtn(); },
+    e => { pos = null; $('geo').className = 'geo bad'; $('geo').textContent = 'Lokasi ditolak atau tidak tersedia. Aktifkan izin lokasi.'; },
+    { enableHighAccuracy: true, maximumAge: 5000, timeout: 20000 });
+}
+
+function selShift() { const c = document.querySelector('input[name=shift]:checked'); return c ? c.value : null; }
+
+function updateBtn() {
+  if (!D) return;
+  let near = null, inRange = false;
+  if (pos) {
+    D.cfg.outlets.forEach(x => {
+      const d = Math.round(meters(pos.latitude, pos.longitude, x.lat, x.lng));
+      if (!near || d < near.jarak) near = { nama: x.nama, jarak: d };
+    });
+    inRange = near.jarak <= D.cfg.radius;
+    $('geo').className = 'geo ' + (inRange ? 'ok' : 'bad');
+    $('geo').textContent = 'Outlet terdekat: ' + near.nama + ', ' + near.jarak + ' m (maksimal ' + D.cfg.radius +
+      ' m), akurasi GPS ±' + Math.round(pos.accuracy) + ' m';
+  }
+  $('bShot').disabled = busy;
+  $('btn').disabled = busy || !inRange || !shotData || (!D.open && !selShift());
+}
+
+/* ---------- Selfie (kamera bawaan HP lewat input file) ---------- */
+function resetShot() {
+  shotData = null;
+  $('camBox').hidden = true;
+  $('shot').removeAttribute('src');
+  $('bShot').textContent = 'Ambil selfie';
+  $('fileShot').value = '';
+}
+
+function toggleShot() { $('fileShot').click(); }
+
+async function onFile(e) {
+  const f = e.target.files[0];
+  if (!f) return;
+  // Tolak foto lama dari galeri (lebih dari 5 menit)
+  if (f.lastModified && Date.now() - f.lastModified > 5 * 60000) {
+    resetShot();
+    $('msg').className = 'msg bad';
+    $('msg').textContent = 'Foto harus diambil langsung sekarang, bukan dari galeri.';
+    updateBtn();
+    return;
+  }
+  try {
+    shotData = await snapFile(f);
+    $('shot').src = shotData;
+    $('camBox').hidden = false;
+    $('bShot').textContent = 'Foto ulang';
+    $('msg').className = 'msg';
+    $('msg').textContent = '';
+  } catch (err) {
+    resetShot();
+    $('msg').className = 'msg bad';
+    $('msg').textContent = err.message;
+  }
+  updateBtn();
+}
+
+function snapFile(f) {
+  return new Promise((ok, no) => {
+    const url = URL.createObjectURL(f), img = new Image();
+    img.onload = () => {
+      const c = document.createElement('canvas');
+      c.width = 480; c.height = Math.round(480 * img.height / img.width);
+      const x = c.getContext('2d');
+      x.drawImage(img, 0, 0, c.width, c.height);
+      x.fillStyle = 'rgba(0,0,0,.6)'; x.fillRect(0, c.height - 24, c.width, 24);
+      x.fillStyle = '#fff'; x.font = '13px sans-serif';
+      x.fillText(new Date().toLocaleString('id-ID', { timeZone: 'Asia/Jakarta' }) +
+        (pos ? '  ' + pos.latitude.toFixed(6) + ', ' + pos.longitude.toFixed(6) : ''), 8, c.height - 8);
+      URL.revokeObjectURL(url);
+      ok(c.toDataURL('image/jpeg', 0.7));
+    };
+    img.onerror = () => no(new Error('Foto tidak bisa dibaca. Coba ambil ulang.'));
+    img.src = url;
+  });
+}
+
+/* ---------- Kirim presensi ---------- */
+async function submit() {
+  busy = true; updateBtn();
+  $('msg').className = 'msg'; $('msg').textContent = 'Mengirim presensi…';
+  try {
+    const r = await run('submitAttendance', me, {
+      tipe: D.open ? 'pulang' : 'masuk', shift: selShift(),
+      lat: pos.latitude, lng: pos.longitude, acc: pos.accuracy, foto: shotData
+    });
+    busy = false;
+    resetShot();
+    await load();
+    $('msg').className = 'msg ok'; $('msg').textContent = r.pesan;
+  } catch (e) {
+    busy = false; updateBtn();
+    $('msg').className = 'msg bad'; $('msg').textContent = e.message;
+  }
+}
+
+/* ---------- Pasang event ---------- */
+$('who').onchange = pilih;
+$('btn').onclick = submit;
+$('bShot').onclick = toggleShot;
+$('fileShot').onchange = onFile;
+boot();
+</script>
+</body>
+</html>
